@@ -2,17 +2,21 @@ import time
 import pyautogui as pg
 import webbrowser as web
 
-numbers = []
-message: str
-first = True
+phone_file = input("Введите название файла с телефонными номерами: ")
+message_file = input("Введите название файла с сообщением: ")
 
-with open("phone_numbers.txt", "r") as file:
+numbers = []
+message = ""
+
+with open(phone_file, "r") as file:
     for line in file:
         numbers.append(line.strip())
 
-with open("message.txt", "r") as file1:
+with open(message_file, "r") as file1:
     for line in file1:
         message = line.strip()
+
+first = True
 
 for number in numbers:
     time.sleep(4)
@@ -23,7 +27,6 @@ for number in numbers:
     width, height = pg.size()
     pg.click(width / 2, height / 2)
     time.sleep(8)
-    pg.click()
     pg.press('enter')
     time.sleep(8)
     pg.hotkey('ctrl', 'w')
