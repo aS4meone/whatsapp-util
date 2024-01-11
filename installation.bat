@@ -1,0 +1,9 @@
+@echo off
+echo Создаем виртуальное окружение...
+python -m venv venv
+echo Активируем виртуальное окружение...
+call venv\Scripts\activate
+echo Устанавливаем зависимости...
+pip install pyautogui webbrowser pandas openpyxl
+echo Готово!
+pause
