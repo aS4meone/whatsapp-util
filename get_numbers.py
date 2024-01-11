@@ -1,23 +1,24 @@
 import pandas as pd
 
+file_name = 'phone_numbers.txt'
+
 df = pd.read_excel('vapess_kazakhstan.xlsx')
-print('загрузка данных')
 
-df_filtered = df[df['Телефон 1'].apply(lambda x: len(str(x)) > 5)]
-print('фильтрация')
+total_numbers_before = len(df)
 
-df_unique = df_filtered.drop_duplicates(subset='Наименование')
-print('удаление дубликатов')
+df_filtered = df[df['Телефон 1'].apply(lambda x: len(str(x)) > 5)].copy()
 
-phone_numbers = []
-for index, row in df_unique.iterrows():
-    phone_number = str(row['Телефон 1'])[:11]
-    print(row['Наименование'], phone_number)
-    phone_numbers.append(phone_number)
+df_filtered.loc[:, 'Телефон 1'] = df_filtered['Телефон 1'].astype(str).str[:11]
 
+df_unique_phones = df_filtered.drop_duplicates(subset='Телефон 1')
+unique_numbers_count = len(df_unique_phones)
 
-# Сохраняем номера телефонов в текстовый файл
-with open('phone_numbers.txt', 'w') as file:
-    print('saved as phone_numbers.txt')
-    for number in phone_numbers:
+unique_phone_numbers = df_unique_phones['Телефон 1'].tolist()
+
+with open(f'{file_name}', 'w') as file:
+    for number in unique_phone_numbers:
         file.write(number + '\n')
+
+print(f'Сохранено как {file_name}.txt')
+print("Номеров -", total_numbers_before)
+print("Уникальных - ", unique_numbers_count)
